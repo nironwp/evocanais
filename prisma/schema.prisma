@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = "mongodb+srv://mendes:XF8dgmV8xvYvK27e@cluster0.ymfapqd.mongodb.net/rui?retryWrites=true&w=majority"
+}
+
+
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  telegram_id String @unique
+}
+
+enum GroupStatus {
+  ACTIVE
+  OFF
+}
+
+enum ChannelStatus {
+  ACTIVE 
+  OFF
+}
+
+model Channel {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  telegram_id Int @unique
+  telegram_id_owner_id 			Int			
+  status ChannelStatus @default(OFF)
+  fixed Boolean @default(false)
+}
+
+model ListMessage {
+   id String @id @default(auto()) @map("_id") @db.ObjectId
+   chat_id Int
+   message_id Int
+}
+model Group {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  telegram_id Int @unique
+  telegram_id_owner_id 			Int			
+  status GroupStatus @default(OFF)
+  fixed Boolean @default(false)
+}

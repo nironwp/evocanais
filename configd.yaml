@@ -1,0 +1,13 @@
+staff_chat_id: '-1002021410367'
+owner_id: '6400631193'
+bot_token: '6955273728:AAHh8QBY6AQR28U5pZccL5w_spc6ahj6tlE'
+min_users_in_group: 1000
+default_message: 'Olá acesse'
+default_rotational_midia_path: 'midias'
+telegram_api_id: 22580021
+telegram_api_hash: 2f339911b6c7244bec540652f2859a65
+parse_mode: 'HTML'
+start_command_text: "😊 Seja bem-vindo ao nosso serviço automatizado de parcerias!\n\n🌟 FUNCIONAMENTO:\n\nQuando divulgarmos links nos seus grupos, faremos o mesmo com o seu link em outros grupos.\n\n🤗 PARCERIA EQUILIBRADA!\n\nÉ importante manter as listas compartilhadas no seu grupo por, no mínimo, ⏳ 24 horas para garantir a visibilidade do seu link.\n\n🔵 CRITÉRIOS:\n\nO histórico de mensagens do grupo deve estar ativado.\n\nO grupo deve ter atividades regulares ou conteúdo de mídia.\n\nO grupo deve ter um mínimo de 100 participantes.\n\nConteúdo ilegal é estritamente proibido.\n\nManutenção das listas compartilhadas por pelo menos 24 horas.\n\nToque em \"🔵 Incluir Grupo\" para se juntar!"
+horarios:
+  - "15:30"
+  - "1:16"
