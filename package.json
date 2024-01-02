@@ -21,7 +21,7 @@
     "dist/"
   ],
   "scripts": {
-    "dev": "ts-node-dev ./src/index.ts",
+    "start": "ts-node-dev ./src/index.ts",
     "build": "npx prisma db push && tsc",
     "changelog": "conventional-changelog -p angular -u",
     "changelog:update": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
