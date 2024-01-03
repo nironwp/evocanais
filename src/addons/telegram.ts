@@ -151,7 +151,19 @@ class TelegramAddon {
 				})
 
 				for (const oldMessage of otherMessages) {
-					await client.bot.api.deleteMessage(channel.telegram_id, oldMessage.message_id)
+					try {
+						await client.bot.api.deleteMessage(channel.telegram_id, oldMessage.message_id)
+						
+					} catch (error) {
+						console.log('Error while deleting message:', oldMessage.message_id)
+
+						await cache.prisma_client.listMessage.deleteMany({
+							where: {
+								chat_id: channel.telegram_id,
+								message_id: oldMessage.message_id
+							}
+						})
+					}
 				}
 
 				const message = await client.bot.api.sendMessage(
