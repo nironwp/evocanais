@@ -174,7 +174,12 @@ class TelegramAddon {
 					}
 				);
 
-				await client.bot.api.pinChatMessage(channel.telegram_id, message.message_id)
+				try {
+					
+					await client.bot.api.pinChatMessage(channel.telegram_id, message.message_id)
+				} catch (error) {
+					console.log('Error while pining message:', channel.telegram_id)
+				}
 
 
 				await cache.prisma_client.listMessage.create({
