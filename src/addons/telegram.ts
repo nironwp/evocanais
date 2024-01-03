@@ -179,6 +179,7 @@ class TelegramAddon {
 				});
 			} catch (error) {
 				console.log('Erro ao enviar mensagem para o canal:', channel.telegram_id);
+				console.log('Erro recebido:', error.message)
 			}
 		}
 	}
