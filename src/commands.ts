@@ -231,14 +231,19 @@ async function personalChannelsCommand(ctx: any, client: TelegramAddon) {
 		const inlineKeyboard = new InlineKeyboard();
 
 		for (const channel of ownedChannels) {
-			const invite = await client.generateGroupInviteLink(
-				channel.telegram_id,
-				client.bot.botInfo.id
-			);
-			const title = await client.getGroupName(channel.telegram_id);
+			try {
+				
+				const invite = await client.generateGroupInviteLink(
+					channel.telegram_id,
+					client.bot.botInfo.id
+				);
+				const title = await client.getGroupName(channel.telegram_id);
+				inlineKeyboard.url(title, invite).row();
+			} catch (error) {
+				console.log('Error while generating invite link to bot')				
+			}
 
 			// Adiciona cada grupo como um botão no InlineKeyboard
-			inlineKeyboard.url(title, invite).row();
 		}
 
 		try {

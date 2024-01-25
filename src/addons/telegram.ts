@@ -138,7 +138,7 @@ class TelegramAddon {
 		console.log('Alrady make keyboard');
 		inlineKeyboard
 			.url('💫 Adicionar', `https://t.me/${client.bot.botInfo.username}`)
-			.url('📂 Ver todos', 'putariatelegram.com')
+			.url('📂 Ver todos', 'putariaporno.com')
 			.row();
 		for (const channel of allChannels) {
 			console.log('Enviando mensagem para o canal:', channel.telegram_id);
@@ -168,7 +168,7 @@ class TelegramAddon {
 
 				const message = await client.bot.api.sendMessage(
 					channel.telegram_id,
-					`A lista mais quente do telegram 🔥 @${client.bot.botInfo.username}\n\nVeja mais Canais e Grupos em: https://putariatelegram.com`,
+					`A lista mais quente do telegram 🔥 @${client.bot.botInfo.username}\n\nVeja mais Canais e Grupos em: https://putariaporno.com`,
 					{
 						reply_markup: inlineKeyboard,
 					}
@@ -261,14 +261,14 @@ class TelegramAddon {
 		console.log('Alrady make keyboard');
 		inlineKeyboard
 			.url('🫵🏻 Adicionar', `https://t.me/${client.bot.botInfo.username}`)
-			.url('📂 Ver todos', 'putariatelegram.com')
+			.url('📂 Ver todos', 'putariaporno.com')
 			.row();
 		for (const group of allGroups) {
 			console.log('Enviando mensagem para o grupo:', group.telegram_id);
 			try {
 				await client.bot.api.sendMessage(
 					group.telegram_id,
-					`A lista mais quente do telegram 🔥 @${client.bot.botInfo.username}\n\nVeja mais Canais e Grupos em: https://putariatelegram.com`,
+					`A lista mais quente do telegram 🔥 @${client.bot.botInfo.username}\n\nVeja mais Canais e Grupos em: https://putariaporno.com`,
 					{
 						reply_markup: inlineKeyboard,
 					}
