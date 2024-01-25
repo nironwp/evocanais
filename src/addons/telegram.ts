@@ -24,6 +24,8 @@ class TelegramAddon {
     this.bot.api.config.use(throttler);
 	}
 
+
+
 	async checkIsAdmin(
 		chatId: string | number,
 		memberId: number

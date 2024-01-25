@@ -236,9 +236,15 @@ async function personalChannelsCommand(ctx: any, client: TelegramAddon) {
 				const invite = await client.generateGroupInviteLink(
 					channel.telegram_id,
 					client.bot.botInfo.id
-				);
-				const title = await client.getGroupName(channel.telegram_id);
-				inlineKeyboard.url(title, invite).row();
+				).catch((err) => {
+					console.log('Error while generating invite')
+				});
+
+				if(invite) {
+					const title = await client.getGroupName(channel.telegram_id);
+					inlineKeyboard.url(title, invite).row();
+
+				}
 			} catch (error) {
 				console.log('Error while generating invite link to bot')				
 			}
