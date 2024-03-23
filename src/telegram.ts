@@ -38,15 +38,20 @@ async function dolisteners(client: TelegramAddon) {
 	});
 	client.bot.command('listgroups', (ctx) => {
 		try {
-			commands.listGroupsCommand(ctx, client);
+			// Página padrão é 1 e tamanho padrão é 5 grupos por página
+			const page = ctx.message.text.split(' ')[1] || 1;
+			const pageSize = ctx.message.text.split(' ')[2] || 5;
+			commands.listGroupsCommand(ctx, client, parseInt(page+''), parseInt(pageSize+''));
 		} catch (error) {
 			console.log('Error on listgroups');
 		}
 	});
-
+	
 	client.bot.command('listchannels', (ctx) => {
 		try {
-			commands.listChannelsComand(ctx, client);
+			const page = ctx.message.text.split(' ')[1] || 1;
+        	const pageSize = ctx.message.text.split(' ')[2] || 5;
+			commands.listChannelsComand(ctx, client,parseInt(page+''), parseInt(pageSize+''));
 		} catch (error) {
 			console.log('Error on listchannels');
 		}

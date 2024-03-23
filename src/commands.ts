@@ -380,113 +380,125 @@ async function channelAcceptReportCommand(ctx: any, client: TelegramAddon) {
 }
 
 
-async function listGroupsCommand(ctx: any, client: TelegramAddon) {
-	try {
-		try {
-			if (ctx.from.id + '' !== cache.config.owner_id + '') {
-				return ctx.reply('Você não tem permissão para executar esse comando.');
-			}
-		} catch (error) {
-			console.log('Error in reply:', error);
-		}
+async function listGroupsCommand(ctx: any, client: TelegramAddon, page: number = 1, pageSize: number = 5) {
+    try {
+        try {
+            if (ctx.from.id + '' !== cache.config.owner_id + '') {
+                return ctx.reply('Você não tem permissão para executar esse comando.');
+            }
+        } catch (error) {
+            console.log('Error in reply:', error);
+        }
 
-		const groups = await cache.prisma_client.group.findMany({
-			where: {
-				status: 'ACTIVE'
-			}
-		});
-		const inlineKeyboard = new InlineKeyboard();
+        const groups = await cache.prisma_client.group.findMany({
+            where: {
+                status: 'ACTIVE'
+            }
+        });
 
-		for (const group of groups) {
-			const invite = await client.generateGroupInviteLink(
-				group.telegram_id,
-				client.bot.botInfo.id
-			);
-			if (invite) {
-				const title = await client.getGroupName(group.telegram_id);
+        const startIndex = (page - 1) * pageSize;
+        const endIndex = page * pageSize;
+        const groupsToShow = groups.slice(startIndex, endIndex);
 
-				inlineKeyboard.url(title, invite).row();
-				if (group.status === 'ACTIVE') {
-					if (!group.fixed) {
-						inlineKeyboard
-							.text('Fixar 🌟', `fix_group:${group.telegram_id}`)
-							.text('Remover 🚫', `reject_group:${group.telegram_id}`)
-							.row();
-					} else {
-						inlineKeyboard
-							.text('Desfixar 🌟', `unfix_group:${group.telegram_id}`)
-							.text('Remover 🚫', `reject_group:${group.telegram_id}`)
-							.row();
-					}
-				}
-			}
-		}
+        const inlineKeyboard = new InlineKeyboard();
 
-		try {
-			return ctx.reply('Grupos:', {
-				reply_markup: inlineKeyboard,
-			});
-		} catch (error) {
-			console.log('Erro ao tentar fixar bot');
-		}
-	} catch (error) {
-		console.log('Error while listing groups command');
-	}
+        for (const group of groupsToShow) {
+            const invite = await client.generateGroupInviteLink(
+                group.telegram_id,
+                client.bot.botInfo.id
+            );
+            if (invite) {
+                const title = await client.getGroupName(group.telegram_id);
+
+                inlineKeyboard.url(title, invite).row();
+                if (group.status === 'ACTIVE') {
+                    if (!group.fixed) {
+                        inlineKeyboard
+                            .text('Fixar 🌟', `fix_group:${group.telegram_id}`)
+                            .text('Remover 🚫', `reject_group:${group.telegram_id}`)
+                            .row();
+                    } else {
+                        inlineKeyboard
+                            .text('Desfixar 🌟', `unfix_group:${group.telegram_id}`)
+                            .text('Remover 🚫', `reject_group:${group.telegram_id}`)
+                            .row();
+                    }
+                }
+            }
+        }
+
+        try {
+            return ctx.reply('Grupos:', {
+                reply_markup: inlineKeyboard,
+            });
+        } catch (error) {
+            console.log('Erro ao tentar fixar bot');
+        }
+    } catch (error) {
+        console.log('Error while listing groups command');
+    }
 }
 
-async function listChannelsComand(ctx: any, client: TelegramAddon) {
-	try {
-		try {
-			if (ctx.from.id + '' !== cache.config.owner_id + '') {
-				return ctx.reply('Você não tem permissão para executar esse comando.');
-			}
-		} catch (error) {
-			console.log('Error in reply:', error);
-		}
 
-		const channels = await cache.prisma_client.channel.findMany({
-			where: {
-				status: 'ACTIVE',
-			},
-		});
-		const inlineKeyboard = new InlineKeyboard();
+async function listChannelsComand(ctx: any, client: TelegramAddon, page: number = 1, pageSize: number = 5) {
+    try {
+        try {
+            if (ctx.from.id + '' !== cache.config.owner_id + '') {
+                return ctx.reply('Você não tem permissão para executar esse comando.');
+            }
+        } catch (error) {
+            console.log('Error in reply:', error);
+        }
 
-		for (const channel of channels) {
-			const invite = await client.generateGroupInviteLink(
-				channel.telegram_id,
-				client.bot.botInfo.id
-			);
-			if (invite) {
-				const title = await client.getGroupName(channel.telegram_id);
+        const channels = await cache.prisma_client.channel.findMany({
+            where: {
+                status: 'ACTIVE',
+            },
+        });
 
-				inlineKeyboard.url(title, invite).row();
-				if (channel.status === 'ACTIVE') {
-					if (!channel.fixed) {
-						inlineKeyboard
-							.text('Fixar 🌟', `fix_channel:${channel.telegram_id}`)
-							.text('Remover 🚫', `reject_channel:${channel.telegram_id}`)
-							.row();
-					} else {
-						inlineKeyboard
-							.text('Desfixar 🌟', `unfix_channel:${channel.telegram_id}`)
-							.text('Remover 🚫', `reject_channel:${channel.telegram_id}`)
-							.row();
-					}
-				}
-			}
-		}
+        const startIndex = (page - 1) * pageSize;
+        const endIndex = page * pageSize;
+        const channelsToShow = channels.slice(startIndex, endIndex);
 
-		try {
-			return ctx.reply('Canais:', {
-				reply_markup: inlineKeyboard,
-			});
-		} catch (error) {
-			console.log('Erro ao tentar fixar bot');
-		}
-	} catch (error) {
-		console.log('Error while listing groups command');
-	}
+        const inlineKeyboard = new InlineKeyboard();
+
+        for (const channel of channelsToShow) {
+            const invite = await client.generateGroupInviteLink(
+                channel.telegram_id,
+                client.bot.botInfo.id
+            );
+            if (invite) {
+                const title = await client.getGroupName(channel.telegram_id);
+
+                inlineKeyboard.url(title, invite).row();
+                if (channel.status === 'ACTIVE') {
+                    if (!channel.fixed) {
+                        inlineKeyboard
+                            .text('Fixar 🌟', `fix_channel:${channel.telegram_id}`)
+                            .text('Remover 🚫', `reject_channel:${channel.telegram_id}`)
+                            .row();
+                    } else {
+                        inlineKeyboard
+                            .text('Desfixar 🌟', `unfix_channel:${channel.telegram_id}`)
+                            .text('Remover 🚫', `reject_channel:${channel.telegram_id}`)
+                            .row();
+                    }
+                }
+            }
+        }
+
+        try {
+            return ctx.reply('Canais:\n'+'Pagina - '+page+':\n'+'Tamanho da Página - '+pageSize+':', {
+                reply_markup: inlineKeyboard,
+            });
+        } catch (error) {
+            console.log('Erro ao tentar fixar bot');
+        }
+    } catch (error) {
+        console.log('Error while listing groups command');
+    }
 }
+
 export {
 	startCommand,
 	personalGroupsCommand,

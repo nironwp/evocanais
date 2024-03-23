@@ -1,5 +1,5 @@
 staff_chat_id: '-1002021410367'
-owner_id: '1456121031'
+owner_id: '6656534823'
 bot_token: '6705004892:AAGRlCGEbYPjN3fyOQE12Y9a4XXitnk5bN4'
 min_users_in_group: 1000
 default_message: 'Olá acesse'
@@ -10,4 +10,5 @@ parse_mode: 'HTML'
 start_command_text: "😊 Seja bem-vindo ao nosso serviço automatizado de parcerias!\n\n🌟 FUNCIONAMENTO:\n\nQuando divulgarmos links nos seus grupos, faremos o mesmo com o seu link em outros grupos.\n\n🤗 PARCERIA EQUILIBRADA!\n\nÉ importante manter as listas compartilhadas no seu grupo por, no mínimo, ⏳ 24 horas para garantir a visibilidade do seu link.\n\n🔵 CRITÉRIOS:\n\nO histórico de mensagens do grupo deve estar ativado.\n\nO grupo deve ter atividades regulares ou conteúdo de mídia.\n\nO grupo deve ter um mínimo de 300 participantes.\n\nConteúdo ilegal é estritamente proibido.\n\nManutenção das listas compartilhadas por pelo menos 24 horas.\n\nToque em \"📝 Participar da lista\" para se juntar!"
 horarios:
   - "12:00"
+  - "12:40"
   - "20:00"

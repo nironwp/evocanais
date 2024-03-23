@@ -88,20 +88,15 @@ class TelegramAddon {
 		});
 
 		console.log('Total de canais encontrados ATIVOS:', allChannels.length);
-		// Separar grupos fixados dos outros
 		const fixedChannels = allChannels.filter((channel) => channel.fixed === true);
 		const otherChannels = allChannels.filter((channel) => channel.fixed !== true);
-
-		// Misturar os grupos não fixados aleatoriamente
 		const shuffledOtherChannels = otherChannels.sort(() => 0.5 - Math.random());
-
-		// Combinar os grupos fixados com uma parte dos grupos misturados para ter no máximo 20 grupos
 		const combinedChannels = [...fixedChannels, ...shuffledOtherChannels].slice(
 			0,
 			16
 		);
 
-		const inlineKeyboard = new InlineKeyboard();
+		const random = [];
 
 		for (const element of combinedChannels) {
 			try {
@@ -119,15 +114,15 @@ class TelegramAddon {
 					let title: string;
 					if (
 						chat.type === 'channel' ||
-            chat.type === 'group' ||
-            chat.type === 'supergroup'
+            			chat.type === 'group' ||
+            			chat.type === 'supergroup'
 					) {
 						title = chat.title;
 					} // 'title' contém o nome do grupo
 					if (chat.type === 'private') {
 						title = chat.username;
 					}
-					inlineKeyboard.url(title, invite.invite_link).row();
+					random.push({title,link: invite.invite_link});
 				}
 			} catch (error) {
 				console.log(
@@ -137,15 +132,22 @@ class TelegramAddon {
 			}
 		}
 
-		console.log('Alrady make keyboard');
-		inlineKeyboard
-			.url('💫 Adicionar', `https://t.me/${client.bot.botInfo.username}`)
-			.url('📂 Ver todos', 'putariaporno.com')
-			.row();
+		console.log('Already make keyboard');
 		for (const channel of allChannels) {
 			console.log('Enviando mensagem para o canal:', channel.telegram_id);
 			try {
+				const validInviteLinks = random.filter((link) => link);
+				const shuffledInviteLinks = this.shuffleArray(validInviteLinks);
 
+				// Criar teclado inline com os links de convite embaralhados
+				const inlineKeyboard = new InlineKeyboard();
+				shuffledInviteLinks.forEach((inviteLink) => {
+					inlineKeyboard.url(inviteLink.title, inviteLink.link).row();
+				});
+				inlineKeyboard
+					.url('💫 Adicionar', `https://t.me/${client.bot.botInfo.username}`)
+					.url('📂 Ver todos', 'putariatelegram.com')
+					.row();
 				const otherMessages = await cache.prisma_client.listMessage.findMany({
 					where: {
 						chat_id: channel.telegram_id
@@ -170,7 +172,7 @@ class TelegramAddon {
 
 				const message = await client.bot.api.sendMessage(
 					channel.telegram_id,
-					`A lista mais quente do telegram 🔥 @${client.bot.botInfo.username}\n\nVeja mais Canais e Grupos em: https://putariaporno.com`,
+					`A lista mais quente do telegram 🔥 @${client.bot.botInfo.username}\n\nVeja mais Canais e Grupos em: https://putariatelegram.com`,
 					{
 						reply_markup: inlineKeyboard,
 					}
@@ -201,6 +203,14 @@ class TelegramAddon {
 				console.log('Erro recebido:', error.message)
 			}
 		}
+	}
+
+	shuffleArray(array: any[]): any[] {
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+		}
+		return array;
 	}
 
 	async enviarMensagemDeDivulgacao(client: TelegramAddon) {
@@ -263,14 +273,14 @@ class TelegramAddon {
 		console.log('Alrady make keyboard');
 		inlineKeyboard
 			.url('🫵🏻 Adicionar', `https://t.me/${client.bot.botInfo.username}`)
-			.url('📂 Ver todos', 'putariaporno.com')
+			.url('📂 Ver todos', 'putariatelegram.com')
 			.row();
 		for (const group of allGroups) {
 			console.log('Enviando mensagem para o grupo:', group.telegram_id);
 			try {
 				await client.bot.api.sendMessage(
 					group.telegram_id,
-					`A lista mais quente do telegram 🔥 @${client.bot.botInfo.username}\n\nVeja mais Canais e Grupos em: https://putariaporno.com`,
+					`A lista mais quente do telegram 🔥 @${client.bot.botInfo.username}\n\nVeja mais Canais e Grupos em: https://putariatelegram.com`,
 					{
 						reply_markup: inlineKeyboard,
 					}
