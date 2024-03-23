@@ -143,6 +143,12 @@ class TelegramAddon {
 						}
 					}
 	
+				}else {
+					await cache.prisma_client.channel.delete({
+						where: {
+							telegram_id: element.telegram_id
+						}
+					});
 				}
 			} catch (error) {
 				console.log(
