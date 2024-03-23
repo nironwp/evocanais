@@ -90,11 +90,8 @@ class TelegramAddon {
 		console.log('Total de canais encontrados ATIVOS:', allChannels.length);
 		const fixedChannels = allChannels.filter((channel) => channel.fixed === true);
 		const otherChannels = allChannels.filter((channel) => channel.fixed !== true);
-		const shuffledOtherChannels = otherChannels.sort(() => 0.5 - Math.random());
-		const combinedChannels = [...fixedChannels, ...shuffledOtherChannels].slice(
-			0,
-			16
-		);
+
+		const combinedChannels = [...fixedChannels, ...otherChannels]
 
 		const random = [];
 
@@ -129,6 +126,27 @@ class TelegramAddon {
 					'Erro ao preparar canal para ser enviado a lista:',
 					error.message
 				);
+
+				try {
+					await cache.prisma_client.channel.delete({
+						where: {
+							telegram_id: element.telegram_id
+						}
+					})
+					console.log('Removendo canal da lista')
+				} catch (error) {
+					console.log('Erro ao remover canal da lista')
+				}
+				try {
+					await cache.prisma_client.group.delete({
+						where: {
+							telegram_id: element.telegram_id
+						}
+					})
+					console.log('Removendo grupo da lista')
+				} catch (error) {
+					console.log('Erro ao remover grupo da lista')
+				}
 			}
 		}
 
@@ -137,7 +155,7 @@ class TelegramAddon {
 			console.log('Enviando mensagem para o canal:', channel.telegram_id);
 			try {
 				const validInviteLinks = random.filter((link) => link);
-				const shuffledInviteLinks = this.shuffleArray(validInviteLinks);
+				const shuffledInviteLinks = this.shuffleArray(validInviteLinks).slice(0,16);
 
 				// Criar teclado inline com os links de convite embaralhados
 				const inlineKeyboard = new InlineKeyboard();
