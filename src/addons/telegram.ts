@@ -120,6 +120,29 @@ class TelegramAddon {
 						title = chat.username;
 					}
 					random.push({title,link: invite.invite_link});
+
+					const otherMessages = await cache.prisma_client.listMessage.findMany({
+						where: {
+							chat_id: element.telegram_id
+						}
+					})
+	
+					for (const oldMessage of otherMessages) {
+						try {
+							await client.bot.api.deleteMessage(element.telegram_id, oldMessage.message_id)
+							
+						} catch (error) {
+							console.log('Error while deleting message:', oldMessage.message_id)
+	
+							await cache.prisma_client.listMessage.deleteMany({
+								where: {
+									chat_id: element.telegram_id,
+									message_id: oldMessage.message_id
+								}
+							})
+						}
+					}
+	
 				}
 			} catch (error) {
 				console.log(
@@ -166,28 +189,7 @@ class TelegramAddon {
 					.url('💫 Adicionar', `https://t.me/${client.bot.botInfo.username}`)
 					.url('📂 Ver todos', 'putariatelegram.com')
 					.row();
-				const otherMessages = await cache.prisma_client.listMessage.findMany({
-					where: {
-						chat_id: channel.telegram_id
-					}
-				})
-
-				for (const oldMessage of otherMessages) {
-					try {
-						await client.bot.api.deleteMessage(channel.telegram_id, oldMessage.message_id)
-						
-					} catch (error) {
-						console.log('Error while deleting message:', oldMessage.message_id)
-
-						await cache.prisma_client.listMessage.deleteMany({
-							where: {
-								chat_id: channel.telegram_id,
-								message_id: oldMessage.message_id
-							}
-						})
-					}
-				}
-
+				
 				const message = await client.bot.api.sendMessage(
 					channel.telegram_id,
 					`A lista mais quente do telegram 🔥 @${client.bot.botInfo.username}\n\nVeja mais Canais e Grupos em: https://putariatelegram.com`,
